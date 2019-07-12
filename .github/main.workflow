@@ -5,7 +5,7 @@ workflow "Build and Push to ECR" {
 
 action "Filters for GitHub Actions" {
   uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
-  args = "branch master"
+  args = "branch dev"
 }
 
 action "GitHub Action for Docker" {
@@ -20,4 +20,9 @@ action "GitHub Action for Docker" {
 action "python-lint" {
   uses = "CyberZHG/github-action-python-lint@master"
   needs = ["Filters for GitHub Actions"]
+}
+
+workflow "New workflow" {
+  on = "push"
+  resolves = ["python-lint"]
 }

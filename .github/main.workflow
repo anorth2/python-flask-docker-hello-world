@@ -3,7 +3,6 @@ workflow "Build and Push to ECR" {
     "Push release to ECR",
     "AWS Auth",
     "Push latest to ECR",
-    "Build dev docker image",
   ]
   on = "push"
 }
@@ -32,12 +31,6 @@ action "Filter master branch" {
   uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
   needs = ["CyberZHG/github-action-python-lint@master"]
   args = "branch master"
-}
-
-action "Build dev docker image" {
-  uses = "actions/docker/cli@86ff551d26008267bb89ac11198ba7f1d807b699"
-  args = "build -t $IMAGE_NAME:dev ."
-  secrets = ["IMAGE_NAME"]
 }
 
 action "Build latest docker image" {

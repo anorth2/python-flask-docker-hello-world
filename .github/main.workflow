@@ -25,7 +25,7 @@ action "Filters for GitHub Actions dev" {
 
 action "CyberZHG/github-action-python-lint@master" {
   uses = "CyberZHG/github-action-python-lint@master"
-  args = "--max-line-length=120"
+  args = "--max-line-length=120 ."
 }
 
 action "Filter master branch" {

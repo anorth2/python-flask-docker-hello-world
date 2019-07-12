@@ -61,6 +61,7 @@ action "AWS Auth" {
   env = {
     AWS_DEFAULT_REGION = "us-west-2"
   }
+  secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
 }
 
 action "Push release to ECR" {

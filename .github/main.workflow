@@ -1,12 +1,12 @@
 workflow "Build and Push to ECR" {
   resolves = [
-    "Push release to ECR",
     "AWS Auth",
     "Push latest to ECR",
+    "Push release to ECR",
+    "Setup kubernetes credentials",
   ]
   on = "push"
 }
-
 
 action "Filters for GitHub Actions master" {
   uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
@@ -76,4 +76,16 @@ action "Push latest to ECR" {
   ]
   args = "push $IMAGE_NAME:latest"
   secrets = ["IMAGE_NAME"]
+}
+
+action "Login to Google Cloud" {
+  uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
+  needs = ["CyberZHG/github-action-python-lint@master"]
+  secrets = ["GCLOUD_AUTH"]
+}
+
+action "Setup kubernetes credentials" {
+  uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
+  needs = ["Login to Google Cloud"]
+  args = "container clusters get-credentials test-github-actions"
 }

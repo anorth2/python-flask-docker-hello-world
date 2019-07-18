@@ -109,7 +109,11 @@ action "Pulumi Deploy (Current Stack)" {
 
 action "Deploy to kubernetes" {
   uses = "docker://pulumi/actions"
-  needs = ["Push latest to ECR", "Push release to ECR"]
+  needs = [
+    "Push latest to ECR",
+    "Push release to ECR",
+    "Setup kubernetes credentials",
+  ]
   secrets = [
     "PULUMI_ACCESS_TOKEN",
     "KUBECONFIG",

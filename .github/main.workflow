@@ -111,7 +111,6 @@ action "Deploy to kubernetes" {
   needs = ["Setup kubernetes credentials", "Push latest to ECR", "Push release to ECR"]
   secrets = [
     "PULUMI_ACCESS_TOKEN",
-    "GOOGLE_CREDENTIALS",
   ]
   args = "up"
   env = {

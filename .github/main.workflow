@@ -103,11 +103,13 @@ action "Set project for Google Cloud" {
 action "Docker Registry" {
   uses = "actions/docker/login@86ff551d26008267bb89ac11198ba7f1d807b699"
   needs = ["Setup kubernetes credentials"]
-  runs = "ls -al $HOME/"
+  runs = "ls"
+  args = "-al $HOME"
 }
 
 action "Docker Registry-1" {
   uses = "actions/docker/login@86ff551d26008267bb89ac11198ba7f1d807b699"
   needs = ["Setup kubernetes credentials"]
-  runs = "ls -al"
+  runs = "ls"
+  args = "-al"
 }

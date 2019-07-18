@@ -4,6 +4,7 @@ workflow "Build and Push to ECR" {
     "Push latest to ECR",
     "Push release to ECR",
     "Setup kubernetes credentials",
+    "Set project for Google Cloud",
   ]
   on = "push"
 }
@@ -79,13 +80,28 @@ action "Push latest to ECR" {
 }
 
 action "Login to Google Cloud" {
-  uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
+  uses = "actions/gcloud/auth@master"
   needs = ["CyberZHG/github-action-python-lint@master"]
   secrets = ["GCLOUD_AUTH"]
 }
 
 action "Setup kubernetes credentials" {
   uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
-  needs = ["Login to Google Cloud"]
   args = "container clusters get-credentials test-github-actions"
+  needs = ["Set project for Google Cloud"]
+}
+
+action "Set project for Google Cloud" {
+  uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
+  needs = ["Login to Google Cloud"]
+  args = "config set project test-github-actions"
+}
+
+action "Pulumi Deploy (Current Stack)" {
+    uses = "docker://pulumi/actions"
+    args = [ "up" ]
+    env = {
+        "PULUMI_CI" = "up"
+    }
+  needs = ["Setup kubernetes credentials"]
 }

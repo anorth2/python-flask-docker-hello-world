@@ -1,6 +1,7 @@
 workflow "Build and Push to ECR" {
   resolves = [
-    "Pulumi Deploy (Current Stack)"
+    "Pulumi Deploy (Current Stack)",
+    "pip install",
   ]
   on = "push"
 }
@@ -65,7 +66,6 @@ action "Push release to ECR" {
   args = "push $IMAGE_NAME:release"
 }
 
-
 action "Push latest to ECR" {
   uses = "actions/docker/cli@86ff551d26008267bb89ac11198ba7f1d807b699"
   needs = [
@@ -105,5 +105,11 @@ action "Pulumi Deploy (Current Stack)" {
     "PULUMI_ACCESS_TOKEN",
     "KUBECONFIG",
   ]
-  needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials"]
+  needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials", "pip install"]
+}
+
+action "pip install" {
+  uses = "jefftriplett/python-actions@master"
+  needs = ["Setup kubernetes credentials"]
+  args = "pip install -r requirements.txt"
 }

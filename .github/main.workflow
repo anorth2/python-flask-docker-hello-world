@@ -1,6 +1,8 @@
 workflow "Build and Push to ECR" {
   resolves = [
     "Pulumi Deploy (Current Stack)",
+    "Lint",
+    "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81",
   ]
   on = "push"
 }
@@ -104,5 +106,17 @@ action "Pulumi Deploy (Current Stack)" {
     "PULUMI_ACCESS_TOKEN",
     "KUBECONFIG",
   ]
-  needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials"]
+  needs = [
+    "Push latest to ECR",
+    "Push release to ECR",
+    "Setup kubernetes credentials",
+    "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81",
+  ]
+}
+
+action "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81" {
+  uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
+  needs = ["Set project for Google Cloud"]
+  args = "container cluster get-credentials test-github-actions --zone us-central1-a"
+  secrets = ["GCLOUD_AUTH"]
 }

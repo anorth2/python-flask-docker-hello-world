@@ -104,12 +104,5 @@ action "Pulumi Deploy (Current Stack)" {
     "PULUMI_ACCESS_TOKEN",
     "KUBECONFIG",
   ]
-  needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials", "pip install"]
-}
-
-action "pip install" {
-  uses = "docker://pulumi/actions"
-  needs = ["Lint"]
-  args = "install -r requirements.txt"
-  runs = "pip"
+  needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials"]
 }

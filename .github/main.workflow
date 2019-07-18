@@ -111,16 +111,15 @@ action "Deploy to kubernetes" {
   needs = ["Setup kubernetes credentials", "Push latest to ECR", "Push release to ECR"]
   secrets = [
     "PULUMI_ACCESS_TOKEN",
+    "GOOGLE_CREDENTIALS",
+    "AWS_ACCESS_KEY_ID",
+    "AWS_SECRET_ACCESS_KEY",
+    "GITHUB_TOKEN",
   ]
   args = "up"
   env = {
     PULUMI_CI = "up"
   }
-}
-
-workflow "New workflow" {
-  on = "delete"
-  resolves = ["Filters for GitHub Actions"]
 }
 
 action "Filters for GitHub Actions" {

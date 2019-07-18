@@ -1,7 +1,6 @@
 workflow "Build and Push to ECR" {
   resolves = [
-    "Pulumi Deploy (Current Stack)",
-    "pip install",
+    "Pulumi Deploy (Current Stack)"
   ]
   on = "push"
 }
@@ -21,15 +20,15 @@ action "Filters for GitHub Actions dev" {
   args = "branch dev"
 }
 
-action "CyberZHG/github-action-python-lint@master" {
+action "Lint" {
   uses = "CyberZHG/github-action-python-lint@master"
   args = "--max-line-length=120 ."
 }
 
 action "Filter master branch" {
   uses = "actions/bin/filter@3c0b4f0e63ea54ea5df2914b4fabf383368cd0da"
-  needs = ["CyberZHG/github-action-python-lint@master"]
   args = "branch master"
+  needs = ["Lint"]
 }
 
 action "Build latest docker image" {
@@ -48,12 +47,12 @@ action "Build release docker image" {
 
 action "AWS Auth" {
   uses = "actions/aws/cli@master"
-  needs = ["CyberZHG/github-action-python-lint@master"]
   args = "ecr get-login --no-include-email --region $AWS_DEFAULT_REGION | sh"
   env = {
     AWS_DEFAULT_REGION = "us-west-2"
   }
   secrets = ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"]
+  needs = ["Lint"]
 }
 
 action "Push release to ECR" {
@@ -78,8 +77,8 @@ action "Push latest to ECR" {
 
 action "Login to Google Cloud" {
   uses = "actions/gcloud/auth@master"
-  needs = ["CyberZHG/github-action-python-lint@master"]
   secrets = ["GCLOUD_AUTH"]
+  needs = ["Lint"]
 }
 
 action "Setup kubernetes credentials" {
@@ -109,7 +108,8 @@ action "Pulumi Deploy (Current Stack)" {
 }
 
 action "pip install" {
-  uses = "jefftriplett/python-actions@master"
-  needs = ["Setup kubernetes credentials"]
-  args = "pip install -r requirements.txt"
+  uses = "docker://pulumi/actions"
+  needs = ["Lint"]
+  args = "install -r requirements.txt"
+  runs = "pip"
 }

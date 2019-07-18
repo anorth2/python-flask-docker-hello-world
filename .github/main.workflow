@@ -6,7 +6,7 @@ workflow "Build and Push to ECR" {
     "Set project for Google Cloud",
     "Deploy to kubernetes",
     "Docker Tag",
-    "Docker Tag-1",
+    "Setup kubernetes credentials",
   ]
   on = "push"
 }
@@ -132,10 +132,4 @@ action "Docker Tag" {
   uses = "actions/docker/tag@86ff551d26008267bb89ac11198ba7f1d807b699"
   needs = ["Setup kubernetes credentials"]
   runs = "ls"
-}
-
-action "Docker Tag-1" {
-  uses = "actions/docker/tag@86ff551d26008267bb89ac11198ba7f1d807b699"
-  needs = ["Setup kubernetes credentials"]
-  runs = "ls ~/.kube"
 }

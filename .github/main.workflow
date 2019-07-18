@@ -109,6 +109,12 @@ action "Pulumi Deploy (Current Stack)" {
 action "Deploy to kubernetes" {
   uses = "docker://pulumi/actions"
   needs = ["Setup kubernetes credentials", "Push latest to ECR", "Push release to ECR"]
-  secrets = ["PULUMI_ACCESS_TOKEN"]
+  secrets = [
+    "PULUMI_ACCESS_TOKEN",
+    "GOOGLE_CREDENTIALS",
+  ]
   args = "up"
+  env = {
+    PULUMI_CI = "up"
+  }
 }

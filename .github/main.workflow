@@ -111,5 +111,6 @@ action "Pulumi Deploy (Current Stack)" {
   }
   secrets = [
     "PULUMI_ACCESS_TOKEN",
+    "KUBECONFIG",
   ]
 }

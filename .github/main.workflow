@@ -104,7 +104,7 @@ action "Docker Registry" {
   uses = "actions/docker/login@86ff551d26008267bb89ac11198ba7f1d807b699"
   needs = ["Setup kubernetes credentials"]
   runs = "ls"
-  args = "-al $HOME"
+  args = "-al /github/home"
 }
 
 action "Docker Registry-1" {

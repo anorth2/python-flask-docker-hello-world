@@ -4,7 +4,7 @@ workflow "Build and Push to ECR" {
     "Push release to ECR",
     "Set project for Google Cloud",
     "Setup kubernetes credentials",
-    "Pulumi Deploy (Current Stack)",
+    "Pulumi Deploy (Current Stack)"
   ]
   on = "push"
 }
@@ -99,14 +99,14 @@ action "Set project for Google Cloud" {
 }
 
 action "Pulumi Deploy (Current Stack)" {
-    uses = "docker://pulumi/actions"
-    args = [ "up" ]
-    env = {
-        "PULUMI_CI" = "up"
-    }
-    secrets = [
-        "PULUMI_ACCESS_TOKEN",
-        "KUBECONFIG"
-    ]
-    needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials"]
+  uses = "docker://pulumi/actions"
+  args = ["up"]
+  env = {
+    "PULUMI_CI" = "up"
+  }
+  secrets = [
+    "PULUMI_ACCESS_TOKEN",
+    "KUBECONFIG",
+  ]
+  needs = ["Push latest to ECR", "Push release to ECR", "Setup kubernetes credentials"]
 }

@@ -117,3 +117,12 @@ action "Deploy to kubernetes" {
     PULUMI_CI = "up"
   }
 }
+
+workflow "New workflow" {
+  on = "delete"
+  resolves = ["Filters for GitHub Actions"]
+}
+
+action "Filters for GitHub Actions" {
+  uses = "actions/bin/filter@0dbb077f64d0ec1068a644d25c71b1db66148a24"
+}

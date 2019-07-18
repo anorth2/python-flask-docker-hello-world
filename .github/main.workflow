@@ -113,14 +113,13 @@ action "Deploy to kubernetes" {
   needs = ["Docker Tag", "Push latest to ECR", "Push release to ECR"]
   secrets = [
     "PULUMI_ACCESS_TOKEN",
-    "GOOGLE_CREDENTIALS",
-    "AWS_ACCESS_KEY_ID",
-    "AWS_SECRET_ACCESS_KEY",
-    "GITHUB_TOKEN",
+    "KUBECONFIG",
   ]
   args = "up"
   env = {
     PULUMI_CI = "up"
+    GOOGLE_PROJECT = "test-github-actions"
+    GOOGLE_ZONE = "us-central1-a"
   }
 }
 

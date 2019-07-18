@@ -1,0 +1,3 @@
+name: flask-gcloud
+runtime: python
+description: A minimal Kubernetes Python Pulumi program

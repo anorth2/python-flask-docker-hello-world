@@ -1,1 +1,2 @@
-flask
+pulumi==0.17.23
+pulumi-kubernetes==0.25.2

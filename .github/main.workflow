@@ -1,6 +1,6 @@
 workflow "Build and Push to ECR" {
   resolves = [
-    "Pulumi Deploy (Current Stack)"
+    "Pulumi Deploy (Current Stack)",
   ]
   on = "push"
 }
@@ -95,7 +95,7 @@ action "Set project for Google Cloud" {
 }
 
 action "Pulumi Deploy (Current Stack)" {
-  uses = "docker://pulumi/actions"
+  uses = "anorth2/actions@master"
   args = ["up"]
   env = {
     "PULUMI_CI" = "up"

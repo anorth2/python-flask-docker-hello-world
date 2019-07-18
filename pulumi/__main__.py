@@ -9,7 +9,8 @@ flask_container = \
         "name": "flask-app",
         "image": image,
         "ports":
-            [{"containerPort": 8080}]
+            [{"containerPort": 8080}],
+        "imagePullPolicy": "Always"
     }
 ecr_pull_secret = \
     {

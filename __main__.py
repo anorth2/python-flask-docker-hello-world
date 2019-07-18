@@ -2,6 +2,8 @@ import pulumi
 from pulumi_kubernetes.apps.v1 import Deployment
 from pulumi_kubernetes.core.v1 import Service
 
+
+
 app_labels = {"app": "flask"}
 image = "123094825799.dkr.ecr.us-west-2.amazonaws.com/test-github-actions/flask-test:latest"
 flask_container = \

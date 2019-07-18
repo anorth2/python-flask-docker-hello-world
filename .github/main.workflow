@@ -87,7 +87,7 @@ action "Login to Google Cloud" {
 
 action "Setup kubernetes credentials" {
   uses = "actions/gcloud/cli@dc2b6c3bc6efde1869a9d4c21fcad5c125d19b81"
-  args = "container clusters get-credentials test-github-actions"
+  args = "container clusters get-credentials test-github-actions --zone us-central1-a"
   needs = ["Set project for Google Cloud"]
 }
 

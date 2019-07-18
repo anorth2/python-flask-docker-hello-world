@@ -1,9 +1,5 @@
 workflow "Build and Push to ECR" {
   resolves = [
-    "AWS Auth",
-    "Push release to ECR",
-    "Set project for Google Cloud",
-    "Setup kubernetes credentials",
     "Pulumi Deploy (Current Stack)"
   ]
   on = "push"
@@ -68,6 +64,7 @@ action "Push release to ECR" {
   secrets = ["IMAGE_NAME"]
   args = "push $IMAGE_NAME:release"
 }
+
 
 action "Push latest to ECR" {
   uses = "actions/docker/cli@86ff551d26008267bb89ac11198ba7f1d807b699"

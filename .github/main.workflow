@@ -5,6 +5,7 @@ workflow "Build and Push to ECR" {
     "Push release to ECR",
     "Set project for Google Cloud",
     "Deploy to kubernetes",
+    "Docker Tag",
   ]
   on = "push"
 }
@@ -108,7 +109,7 @@ action "Pulumi Deploy (Current Stack)" {
 
 action "Deploy to kubernetes" {
   uses = "docker://pulumi/actions"
-  needs = ["Setup kubernetes credentials", "Push latest to ECR", "Push release to ECR"]
+  needs = ["Docker Tag", "Push latest to ECR", "Push release to ECR"]
   secrets = [
     "PULUMI_ACCESS_TOKEN",
     "GOOGLE_CREDENTIALS",
@@ -124,4 +125,10 @@ action "Deploy to kubernetes" {
 
 action "Filters for GitHub Actions" {
   uses = "actions/bin/filter@0dbb077f64d0ec1068a644d25c71b1db66148a24"
+}
+
+action "Docker Tag" {
+  uses = "actions/docker/tag@86ff551d26008267bb89ac11198ba7f1d807b699"
+  needs = ["Setup kubernetes credentials"]
+  runs = "ls && ls ~/.kube"
 }
